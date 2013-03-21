@@ -15,11 +15,23 @@ def introOneButton(win, mouse, file, pos, sizeText, widthBox, heightBox, fgColor
         box.setFillColor(bgColor)
         if box.contains(mouse):
             box.setFillColor(hoverColor)
-            if mouse.getPressed()[0]:
-                Continue = True
         box.draw()
         text.draw()
         win.flip()
+        inside = False
+        if box.contains(mouse) & mouse.getPressed()[0]:
+            inside = True
+        while mouse.getPressed()[0]:
+            Continue = False
+            intro.draw()
+            box.setFillColor(bgColor)
+            if box.contains(mouse):
+                box.setFillColor(hoverColor)
+            box.draw()
+            text.draw()
+            win.flip()
+            if box.contains(mouse) and inside:
+                Continue = True
     win.flip()
 
 def introTwoButton(win, mouse, file, pos1, pos2, sizeText, widthBox, heightBox, fgColor = "Black", 
