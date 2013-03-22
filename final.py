@@ -179,7 +179,7 @@ class final(wx.Frame):
         font = wx.Font(24, wx.SWISS, wx.NORMAL, wx.NORMAL)
         text.SetFont(font)
         
-        str2 = u"Als letztes haben Sie nun noch die Möglichkeit uns etwas mitzuteilen.\nIst Ihnen etwas Komisches an dem Experiment aufgefallen?\nHaben Sie das Gefühl, das Experiment ist nicht so gelaufen wie es sollte?\nBitte tragen Sie in das Feld all das ein, was Sie uns mitteilen möchten."
+        str2 = u"Als letztes haben Sie nun noch die Möglichkeit, uns etwas mitzuteilen.\nIst Ihnen etwas Komisches an dem Experiment aufgefallen?\nHaben Sie das Gefühl, das Experiment ist nicht so gelaufen, wie es sollte?\nBitte tragen Sie in das Feld all das ein, was Sie uns mitteilen möchten."
         text = wx.StaticText(self, -1, str2, (borderX, 140), )
         font = wx.Font(18, wx.SWISS, wx.NORMAL, wx.NORMAL)
         text.SetFont(font)
