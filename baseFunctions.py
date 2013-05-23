@@ -101,7 +101,17 @@ def writeQuestionnaire(header, dict, name, expName, localPath, netwPath, id, con
     outfileL.close()
     outfileN.close()
 
-def writeResults(header, testLists, expName, localPath, netwPath, id, extra = "", extension = "rtd", printHeader = True, mode = "w", sep = "\t"):
+def writeResults(header, testLists, expName, localPath, netwPath, id, extra = "", extension = "rtd", printHeader = "auto", mode = "w", sep = "\t"):
+    
+    outfileLN = os.path.join(localPath, (expName + '_' + extra + str(id) +'.' + extension))
+    outfileNN = os.path.join(netwPath, (expName + '_' + extra + str(id) +'.' + extension))    
+    
+    if printHeader == "auto":
+        if os.path.isfile(outfileNN):
+            printHeader = False
+        else:
+            printHeader = True
+    
     # write data to file
     output = []
     if printHeader:
@@ -116,10 +126,9 @@ def writeResults(header, testLists, expName, localPath, netwPath, id, extra = ""
             line = map(trial.get, header)
             output.append(line)
     
-    outfileLN = os.path.join(localPath, (expName + '_' + extra + str(id) +'.' + extension))
-    outfileNN = os.path.join(netwPath, (expName + '_' + extra + str(id) +'.' + extension))
+
     outfileL = codecs.open(outfileLN, mode, encoding='utf-8')
-    outfileN = codecs.open(outfileNN,mode, encoding='utf-8')
+    outfileN = codecs.open(outfileNN, mode, encoding='utf-8')
     
     for line in output:
         for i in range(len(line)):
