@@ -332,7 +332,7 @@ def getDemographics(demoDict, endWin, id, cond, localPath, netwPath, expName, he
         demoN.close()  
     else:
         print("\n\nERROR: Network drive not accessible!!\n\n")
-    endWin.flip()
+    #endWin.flip()
     other = final(None, -1, 'final', demoDict)
     endWin.flip()
     app.MainLoop()
