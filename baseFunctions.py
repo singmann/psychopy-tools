@@ -4,6 +4,7 @@
 
 import os
 import codecs
+import cPickle as pickle
 # from psychopy import core, visual
 
 
@@ -107,7 +108,7 @@ def writeResults(header, testLists, expName, localPath, netwPath, id, extra = ""
     outfileNN = os.path.join(netwPath, (expName + '_' + extra + str(id) +'.' + extension))    
     
     if printHeader == "auto":
-        if os.path.isfile(outfileNN):
+        if mode == "a":
             printHeader = False
         else:
             printHeader = True
@@ -140,4 +141,17 @@ def writeResults(header, testLists, expName, localPath, netwPath, id, extra = ""
         outfileN.write('\n')
     outfileL.close()
     outfileN.close()
+
+def pickleResults(object, expName, localPath, netwPath, id, extra = "", extension = "pickle"):
     
+    outfileLN = os.path.join(localPath, (expName + '_' + extra + str(id) +'.' + extension))
+    outfileNN = os.path.join(netwPath, (expName + '_' + extra + str(id) +'.' + extension))    
+    
+    outfileL = open(outfileLN, "wb")
+    outfileN = open(outfileNN, "wb")
+    
+    pickle.dump(object, outfileL, -1)
+    pickle.dump(object, outfileN, -1)
+    
+    outfileL.close()
+    outfileN.close()    
