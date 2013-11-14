@@ -61,5 +61,8 @@ def introTwoButton(win, mouse, file, pos1, pos2, sizeText, widthBox, heightBox, 
         text2.draw()
         win.flip()
     win.flip()
-
+    if Continue:
+        return True
+    else:
+        return False
 
