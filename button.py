@@ -34,6 +34,35 @@ def introOneButton(win, mouse, file, pos, sizeText, widthBox, heightBox, fgColor
                 Continue = True
     win.flip()
 
+def waitButton(win, mouse, stim, pos, sizeText, widthBox, heightBox, fgColor = "Black", 
+    bgColor = "#c0c0c0", hoverColor = "#999999", borderColor = "White", text = "Weiter", units = "norm"):
+    text = visual.TextStim(win, text = text, pos = pos, height = sizeText, color = fgColor, units = units)
+    box = visual.Rect(win, pos = pos, width  = widthBox, height = heightBox, lineColor = borderColor, units = units)
+    Continue = False
+    while not(Continue):
+        [s.draw() for s in stim]
+        box.setFillColor(bgColor)
+        if box.contains(mouse):
+            box.setFillColor(hoverColor)
+        box.draw()
+        text.draw()
+        win.flip()
+        inside = False
+        if box.contains(mouse) & mouse.getPressed()[0]:
+            inside = True
+        while mouse.getPressed()[0]:
+            Continue = False
+            [s.draw() for s in stim]
+            box.setFillColor(bgColor)
+            if box.contains(mouse):
+                box.setFillColor(hoverColor)
+            box.draw()
+            text.draw()
+            win.flip()
+            if box.contains(mouse) and inside:
+                Continue = True
+    win.flip()
+    
 def introTwoButton(win, mouse, file, pos1, pos2, sizeText, widthBox, heightBox, fgColor = "Black", 
     bgColor = "#c0c0c0", hoverColor = "Blue", borderColor = "White", text1 = "Wiederholen", text2 = "Weiter", units = "norm"):
     intro = visual.ImageStim(win, file, pos=(0,0))
