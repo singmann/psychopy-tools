@@ -57,62 +57,52 @@ def getId(path='', filename = 'id.lst', condition = False):
 
 
 def writeQuestionnaire(header, dict, name, expName, localPath, netwPath, id, condition = False, sep = "\t"):
-    
-    outfileLN = os.path.join(localPath, (expName + '_' + name + '.txt'))
-    outfileNN = os.path.join(netwPath, (expName + '_' + name + '.txt'))
-    
-    if os.path.isfile(outfileNN):
-        outfileN = codecs.open(outfileNN,'a', encoding='utf-8')
-    else:
-        outfileN = codecs.open(outfileNN,'w', encoding='utf-8')
-        outfileN.write("id" + sep)
-        if condition:
-            outfileN.write("condition" + sep)
-        for key in header:
-            outfileN.write(key)
-            outfileN.write(sep)
-        outfileN.write("\n")
-    if os.path.isfile(outfileLN):
-        outfileL = codecs.open(outfileLN,'a', encoding='utf-8')
-    else:
-        outfileL = codecs.open(outfileLN,'w', encoding='utf-8')
-        outfileL.write("id" + sep)
-        if condition:
-            outfileL.write(condition + sep)
-        for key in header:
-            outfileL.write(key)
-            outfileL.write(sep)
-        outfileL.write("\n")
-    
-    outfileN.write(unicode(id) + sep)
-    outfileL.write(unicode(id) + sep)
-    if condition:
-        outfileN.write(unicode(condition) + sep)
-        outfileL.write(unicode(condition) + sep)        
-    
-    line = map(dict.get, header)    
-        
-    for i in range(len(line)):
-        outfileL.write(unicode(line[i]).replace("\r\n", " | "))
-        outfileL.write(sep)
-        outfileN.write(unicode(line[i]).replace("\r\n", " | "))
-        outfileN.write(sep)
-    outfileL.write('\n')
-    outfileN.write('\n')
-    outfileL.close()
-    outfileN.close()
+    writeQuestionnaireSingle(header = header, dict = dict, name = name, expName = expName, path = localPath, id = id, condition = condition, sep = sep)
+    writeQuestionnaireSingle(header = header, dict = dict, name = name, expName = expName, path = netwPath, id = id, condition = condition, sep = sep)
 
-def writeResults(header, testLists, expName, localPath, netwPath, id, extra = "", extension = "rtd", printHeader = "auto", mode = "w", sep = "\t"):
+def writeQuestionnaireSingle(header, dict, name, expName, path, id, condition = False, sep = "\t"):
+    if os.path.exists(path):
+        outfileNN = os.path.join(path, (expName + '_' + name + '.txt'))
+        if os.path.isfile(outfileNN):
+            outfileN = codecs.open(outfileNN,'a', encoding='utf-8')
+        else:
+            outfileN = codecs.open(outfileNN,'w', encoding='utf-8')
+            outfileN.write("id" + sep)
+            if condition:
+                outfileN.write("condition" + sep)
+            for key in header:
+                outfileN.write(key)
+                outfileN.write(sep)
+            outfileN.write("\n")
+
+        outfileN.write(unicode(id) + sep)
+        if condition:
+            outfileN.write(unicode(condition) + sep)
+        line = map(dict.get, header)    
+            
+        for i in range(len(line)):
+            outfileN.write(unicode(line[i]).replace("\r\n", " | "))
+            outfileN.write(sep)
+        outfileN.write('\n')
+        outfileN.close()
+    else:
+        print("\n\n***********************************")
+        print("ERROR: following drive not accessible!!\nContact owner of Experiment!!")
+        print(unicode(path))
+        print("************************************\n")
     
-    outfileLN = os.path.join(localPath, (expName + '_' + extra + str(id) +'.' + extension))
-    outfileNN = os.path.join(netwPath, (expName + '_' + extra + str(id) +'.' + extension))    
+def writeResults(header, testLists, expName, localPath, netwPath, id, extra = "", extension = "rtd", printHeader = "auto", mode = "w", sep = "\t"):
+    writeResultsSingle(header = header, testLists = testLists, expName = expName, path = localPath, id = id, extra = extra, extension = extension, printHeader = printHeader, mode = mode, sep = sep)
+    writeResultsSingle(header = header, testLists = testLists, expName = expName, path = netwPath, id = id, extra = extra, extension = extension, printHeader = printHeader, mode = mode, sep = sep)
+    
+def writeResultsSingle(header, testLists, expName, path, id, extra = "", extension = "rtd", printHeader = "auto", mode = "w", sep = "\t"):
     
     if printHeader == "auto":
         if mode == "a":
             printHeader = False
         else:
             printHeader = True
-    
+
     # write data to file
     output = []
     if printHeader:
@@ -126,32 +116,60 @@ def writeResults(header, testLists, expName, localPath, netwPath, id, extra = ""
         for trial in testLists:
             line = map(trial.get, header)
             output.append(line)
-    
-
-    outfileL = codecs.open(outfileLN, mode, encoding='utf-8')
-    outfileN = codecs.open(outfileNN, mode, encoding='utf-8')
-    
-    for line in output:
-        for i in range(len(line)):
-            outfileL.write(unicode(line[i]))
-            outfileL.write(sep)
-            outfileN.write(unicode(line[i]))
-            outfileN.write(sep)
-        outfileL.write('\n')
-        outfileN.write('\n')
-    outfileL.close()
-    outfileN.close()
+            
+    if os.path.exists(path):  
+        outfileLN = os.path.join(path, (expName + '_' + extra + str(id) +'.' + extension)) 
+        outfileL = codecs.open(outfileLN, mode, encoding='utf-8')
+        for line in output:
+            for i in range(len(line)):
+                outfileL.write(unicode(line[i]))
+                outfileL.write(sep)
+            outfileL.write('\n')
+        outfileL.close()
+    else:
+        print("\n\n***********************************")
+        print("ERROR: following drive not accessible!!\nContact owner of Experiment!!")
+        print(unicode(path))
+        print("************************************\n")
 
 def pickleResults(object, expName, localPath, netwPath, id, extra = "", extension = "pickle"):
+    pickleResultsSingle(object = object, expName = expName, path = localPath, id = id, extra = extra, extension = extension)
+    pickleResultsSingle(object = object, expName = expName, path = netwPath, id = id, extra = extra, extension = extension)
     
-    outfileLN = os.path.join(localPath, (expName + '_' + extra + str(id) +'.' + extension))
-    outfileNN = os.path.join(netwPath, (expName + '_' + extra + str(id) +'.' + extension))    
+def pickleResultsSingle(object, expName, path, id, extra = "", extension = "pickle"):
+    if os.path.exists(path):
+        outfileLN = os.path.join(path, (expName + '_' + extra + str(id) +'.' + extension))  
+        outfileL = open(outfileLN, "wb")
+        pickle.dump(object, outfileL, -1)
+        outfileL.close()
+    else:
+        print("\n\n***********************************")
+        print("ERROR: Following drive not accessible!!\nContact owner of Experiment!!")
+        print(unicode(path))
+        print("************************************\n")
+        
     
-    outfileL = open(outfileLN, "wb")
-    outfileN = open(outfileNN, "wb")
-    
-    pickle.dump(object, outfileL, -1)
-    pickle.dump(object, outfileN, -1)
-    
-    outfileL.close()
-    outfileN.close()    
+
+def writeSingleFile(string, expName, name, localPath, netwPath, id, extension = "txt", mode = "w",):
+    if os.path.exists(localPath):
+        commentFile = codecs.open(os.path.join(localPath, (expName + "_" + name + "_" + str(id) + "." + extension)), mode, encoding='utf-8')
+        commentFile.write(unicode(string))
+        commentFile.write("\n")
+        commentFile.write("####################end##################\n")
+        commentFile.write("\n")
+        commentFile.close()
+    else:
+        print("\n\n***********************************")
+        print("ERROR: Local drive not accessible!!\nContact owner of Experiment!!")
+        print("************************************\n")
+    if os.path.exists(netwPath):
+        commentFile = codecs.open(os.path.join(netwPath, (expName + "_" + name + "_" + str(id) + "." + extension)), mode, encoding='utf-8')
+        commentFile.write(unicode(string))
+        commentFile.write("\n")
+        commentFile.write("####################end##################\n")
+        commentFile.write("\n")
+        commentFile.close()
+    else:
+        print("\n\n***********************************")
+        print("ERROR: Network drive not accessible!!\nContact owner of Experiment!!")
+        print("************************************\n")

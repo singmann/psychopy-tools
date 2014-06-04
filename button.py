@@ -5,8 +5,8 @@ from psychopy import visual, event
 
 def introOneButton(win, mouse, file, pos, sizeText, widthBox, heightBox, fgColor = "Black", 
     bgColor = "#c0c0c0", hoverColor = "#999999", borderColor = "White", text = "Weiter", units = "norm"):
-    introS = visual.SimpleImageStim(win, file, pos=(0,0))
-    intro = visual.BufferImageStim(win, stim = [introS])
+    #introS = visual.SimpleImageStim(win, file, pos=(0,0))
+    intro = visual.ImageStim(win, file, pos=(0,0))
     text = visual.TextStim(win, text = text, pos = pos, height = sizeText, color = fgColor, units = units)
     box = visual.Rect(win, pos = pos, width  = widthBox, height = heightBox, lineColor = borderColor, units = units)
     Continue = False
