@@ -159,6 +159,8 @@ class demographics(wx.Frame):
         if self.color.IsChecked():
             self.demoDict["colorVision"] = False
         self.Close()
+        for frame in wx.GetTopLevelWindows():
+            frame.Destroy()
 
 
 
