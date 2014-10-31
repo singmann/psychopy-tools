@@ -5,7 +5,7 @@ import wx
 import wx.richtext as rt
 import os
 import codecs
-from psychopy import *
+from psychopy import visual, core, gui, event, data
 
 class demographics(wx.Frame):    
     def __init__(self, parent, id, title, demoDict):
@@ -40,7 +40,7 @@ class demographics(wx.Frame):
         
         wx.StaticText(self, -1, "Ihr Geschlecht:", (borderX2, posItems + 2*spaceX))
         self.sex = []
-        self.sex1 = wx.RadioButton(self, 1, 'weiblich', (borderX3, posItems + 2*spaceX), (110, -1))
+        self.sex1 = wx.RadioButton(self, 1, 'weiblich', (borderX3, posItems + 2*spaceX), (110, -1), style = wx.RB_GROUP)
         self.sex2 = wx.RadioButton(self, 1, u'männlich', (borderX3 + 110, posItems + 2*spaceX), (110, -1))
         self.sex3 = wx.RadioButton(self, 1, 'keine Angabe', (borderX3 + 2*110, posItems + 2*spaceX), (180, -1))
         self.sex.append(self.sex1)
@@ -48,6 +48,7 @@ class demographics(wx.Frame):
         self.sex.append(self.sex3)
         
         for radio in self.sex:
+            radio.SetValue(0)
             self.Bind(wx.EVT_RADIOBUTTON, self.OnSexSelect, radio )            
         
         wx.StaticBox(self, -1, u"Ihre Tätigkeit", (borderX2, posItems + 3*spaceX), (800,220))
@@ -394,11 +395,11 @@ def getComments(demoDict, endWin, id, localPath, netwPath, expName):
 if __name__ == '__main__':
     demoDict = {"age": 0, "sex": "", "occupation1": "", "occupation2": "", "sight":"", "sightDioptre":"", "sightProblem":"", "colorVision": True, "comment":""}
     app = wx.App(False)
-    #demos = demographics(None, -1, 'demographics', demoDict)
-    #app.MainLoop()
-    #if (demoDict["sight"] == u'Sehfähigkeit eingeschränkt, Sehhilfe (Brille, Kontaktlinsen) wird NICHT getragen.'):
-    demos = sightProblems(None, -1, 'sightProblems', demoDict)
+    demos = demographics(None, -1, 'demographics', demoDict)
     app.MainLoop()
+    if (demoDict["sight"] == u'Sehfähigkeit eingeschränkt, Sehhilfe (Brille, Kontaktlinsen) wird NICHT getragen.'):
+        demos = sightProblems(None, -1, 'sightProblems', demoDict)
+        app.MainLoop()
     other = final(None, -1, 'final', demoDict)
     app.MainLoop()
     pw = Password(None, -1, 'pw')
