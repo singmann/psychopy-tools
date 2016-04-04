@@ -6,7 +6,7 @@ from psychopy import visual, event
 def introOneButton(win, mouse, file, pos, sizeText, widthBox, heightBox, fgColor = "Black", 
     bgColor = "#c0c0c0", hoverColor = "#999999", borderColor = "White", text = "Weiter", units = "norm"):
     #introS = visual.SimpleImageStim(win, file, pos=(0,0))
-    intro = visual.ImageStim(win, file, pos=(0,0))
+    intro = visual.ImageStim(win, file, pos=(0,0), interpolate=True)
     text = visual.TextStim(win, text = text, pos = pos, height = sizeText, color = fgColor, units = units)
     box = visual.Rect(win, pos = pos, width  = widthBox, height = heightBox, lineColor = borderColor, units = units)
     Continue = False
@@ -65,7 +65,7 @@ def waitButton(win, mouse, stim, pos, sizeText, widthBox, heightBox, fgColor = "
     
 def introTwoButton(win, mouse, file, pos1, pos2, sizeText, widthBox, heightBox, fgColor = "Black", 
     bgColor = "#c0c0c0", hoverColor = "Blue", borderColor = "White", text1 = "Wiederholen", text2 = "Weiter", units = "norm"):
-    intro = visual.ImageStim(win, file, pos=(0,0))
+    intro = visual.ImageStim(win, file, pos=(0,0), interpolate=True)
     text1 = visual.TextStim(win, text = text1, pos = pos1, height = sizeText, color = fgColor, units = units)
     box1 = visual.Rect(win, pos = pos1, width  = widthBox, height = heightBox, lineColor = borderColor, units = units)
     text2 = visual.TextStim(win, text = text2, pos = pos2, height = sizeText, color = fgColor, units = units)
